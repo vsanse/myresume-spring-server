@@ -10,5 +10,6 @@ public interface EducationService {
 	public int removeEducationDetails(Long eduId);
 	public List<EducationDetails> getAllEducationDetails(String username);
 	public EducationDetails findByEducationId(Long eduId);
+	public List<EducationDetails> getAllEducationDetials();
 
 }

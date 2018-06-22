@@ -11,4 +11,5 @@ public interface EducationDao {
 	public List<EducationDetails> getAllEducationDetails();
 	public EducationDetails findByEducationId(Long eduId);
 	public EducationDetails getEducationDetailsByUser(String username);
+	public List<EducationDetails> getAllEducationDetials();
 }

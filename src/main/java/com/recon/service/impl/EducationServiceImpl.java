@@ -37,7 +37,7 @@ public class EducationServiceImpl implements EducationService {
 
 	@Override
 	public int removeEducationDetails(Long eduId) {
-
+		
 		return edudao.removeEducationDetails(eduId);
 	}
 
@@ -50,6 +50,11 @@ public class EducationServiceImpl implements EducationService {
 	@Override
 	public EducationDetails findByEducationId(Long eduId) {
 		return edudao.findByEducationId(eduId);
+	}
+
+	@Override
+	public List<EducationDetails> getAllEducationDetials() {
+		return edudao.getAllEducationDetails();
 	}
 	
 	

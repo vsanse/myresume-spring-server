@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.recon.entity.EducationDetails;
 import com.recon.entity.UserInfo;
+import com.recon.service.EducationService;
 import com.recon.service.UserService;
 
 @RestController
@@ -17,9 +19,16 @@ public class RestAdminController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private EducationService eduService;
+	
 	@RequestMapping(value="/getallusers",method = RequestMethod.GET)
 	public List<UserInfo> getAllUsers(){
 		return userService.getAllUsers();
 		
+	}
+	@RequestMapping(value="/getalleducation",method=RequestMethod.GET)
+	public List<EducationDetails> getAllEducationDetails(){
+		return eduService.getAllEducationDetials();
 	}
 }

@@ -50,15 +50,10 @@ public class EducationDaoImpl implements EducationDao {
 	@Override
 	public int removeEducationDetails(Long eduId) {
 		logger.info("inside delete user");
-		try{
 			EducationDetails edu = findByEducationId(eduId);
 			emg.remove(edu);
-			return 1;
-		}
-		catch(Exception e){
-			logger.error("[ERROR] {}",e.getMessage());
 			return 0;
-		}
+
 	}
 
 	@Override
@@ -80,6 +75,12 @@ public class EducationDaoImpl implements EducationDao {
 		Query query  = emg.createQuery("from EducationDetails where userinfo.username like :username");
 		return (EducationDetails) query.setParameter("username", username).getSingleResult();
 
+	}
+
+	@Override
+	public List<EducationDetails> getAllEducationDetials() {
+		Query query  = emg.createQuery("from EducationDetails");
+		return query.getResultList();
 	}
 
 }

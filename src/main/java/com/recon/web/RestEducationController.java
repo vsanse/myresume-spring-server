@@ -2,11 +2,14 @@ package com.recon.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,7 +23,7 @@ import com.recon.service.EducationService;
 @RequestMapping("/education")
 public class RestEducationController {
 
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	private Logger logger = LoggerFactory.getLogger("myresume");
 	
 	@Autowired
 	private EducationService eduservice;
@@ -42,5 +45,22 @@ public class RestEducationController {
 	public ResponseEntity<?> updateEducationDetails(@RequestBody EducationDetails edu){
 		logger.info("inside update education details");
 		return new ResponseEntity<>(eduservice.updateEducationDetails(edu),HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value="delete/{educationId}",method=RequestMethod.GET)
+	public ResponseEntity<?> removeEducationdetails(@PathVariable("educationId") Long educationId,HttpServletResponse response){
+		logger.debug("inside remove edu: {}");
+		String result=null;
+		try{
+			eduservice.removeEducationDetails(educationId);
+			result="{\"deleted\":true}";
+			return ResponseEntity.status(HttpStatus.OK).body(result);
+		}
+		catch(RuntimeException e){
+			logger.debug("EXCEPTION: {}",e.getMessage());
+			result="{\"deleted\":false}";
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
+		}
+
 	}
 }
