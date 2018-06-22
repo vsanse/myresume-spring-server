@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 import com.recon.dao.UserDao;
 import com.recon.entity.UserInfo;
 import com.recon.service.UserService;
-import com.recon.util.CustomErrorType;
 
 @Service(value = "userService")
 public class UserServiceImpl implements UserDetailsService, UserService {
@@ -26,18 +26,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
 	@Override
 	public void insertUser(UserInfo user) {
-		UserInfo newuser = new UserInfo();
-		newuser.setCurrentOrganization(user.getCurrentOrganization());
-		newuser.setDesignation(user.getDesignation());
-		newuser.setEmail(user.getEmail());
-		newuser.setFirstName(user.getFirstName());
-		newuser.setGithubLink(user.getGithubLink());
-		newuser.setLastName(user.getLastName());
-		newuser.setLinkedinLink(user.getLinkedinLink());
-		newuser.setPassword(bcryptEncoder.encode(user.getPassword()));
-		newuser.setPhoneNumber(user.getPhoneNumber());
-		newuser.setUserName(user.getUserName());
-		userdao.insertUser(newuser);
+		user.setPassword(bcryptEncoder.encode(user.getPassword()));
+		userdao.insertUser(user);
 	}
 
 	@Override
@@ -89,5 +79,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	public boolean isEmailAreadyRegistered(String email) {
 		// TODO Auto-generated method stub
 		return userdao.isEmailAreadyRegistered(email);
+	}
+	
+	@Override
+	public UserInfo getCurrentUser(){
+		return findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 	}
 }

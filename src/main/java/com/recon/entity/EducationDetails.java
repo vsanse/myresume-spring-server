@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 @Entity
-@SequenceGenerator(name="eduSeq", initialValue=1001, allocationSize=123)
+@SequenceGenerator(name="eduSeq", initialValue=1002, allocationSize=123)
 public class EducationDetails {
 	
     @Id 
@@ -28,13 +28,31 @@ public class EducationDetails {
 	
 	private Double performance;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	private String educationType;
+	
+	@ManyToOne
     @JoinColumn(
         name = "username", 
         referencedColumnName = "username"
     )
 	private UserInfo userinfo;
 	
+	public String getEducationType() {
+		return educationType;
+	}
+
+	public void setEducationType(String educationType) {
+		this.educationType = educationType;
+	}
+
+	public UserInfo getUserinfo() {
+		return userinfo;
+	}
+
+	public void setUserinfo(UserInfo userinfo) {
+		this.userinfo = userinfo;
+	}
+
 	public Long getId() {
 		return educationId;
 	}
