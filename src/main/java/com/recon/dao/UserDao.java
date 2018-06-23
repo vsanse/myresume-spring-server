@@ -3,7 +3,6 @@ package com.recon.dao;
 import java.util.List;
 
 import com.recon.entity.UserInfo;
-import com.recon.util.CustomErrorType;
 
 public interface UserDao {
 	public String insertUser(UserInfo user);
@@ -14,5 +13,7 @@ public interface UserDao {
 	public UserInfo findByUserEmail(String email);
 	public boolean isUsernameTaken(String username);
 	public boolean isEmailAreadyRegistered(String email);
+	public List<UserInfo> getUserByName(String name);
+	public List<String> getAllUsernames();
 
 }

@@ -10,6 +10,6 @@ public interface InternshipDao {
 	public int removeInternshipDetails(Long internId);
 	public List<InternshipDetails> getAllInternshipDetails();
 	public InternshipDetails findByInternshipId(Long internId);
-	public InternshipDetails getInternshipDetailsByUser(String username);
+	public List<InternshipDetails> getInternshipDetailsByUser(String username);
 
 }

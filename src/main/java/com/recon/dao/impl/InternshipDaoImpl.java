@@ -49,7 +49,7 @@ public class InternshipDaoImpl implements InternshipDao{
 	}
 
 	@Override
-	public InternshipDetails getInternshipDetailsByUser(String username) {
+	public List<InternshipDetails> getInternshipDetailsByUser(String username) {
 		// TODO Auto-generated method stub
 		return null;
 	}

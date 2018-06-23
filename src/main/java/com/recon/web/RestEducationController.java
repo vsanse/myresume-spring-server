@@ -36,11 +36,11 @@ public class RestEducationController {
 	@Autowired
 	private UserService userservice;
 	
-	@Value("${unauthorizedDeleteCode}")
-	private String unauthorizedDeleteCode;
+	@Value("${unauthorizedDeleteErrorCode}")
+	private String unauthorizedDeleteErrorCode;
 	
-	@Value("${unauthorizedDeleteMessage}")
-	private String unauthorizedDeleteMessage;
+	@Value("${unauthorizedDeleteErrorMessage}")
+	private String unauthorizedDeleteErrorMessage;
 	
 	@RequestMapping(value="/getdetails",method = RequestMethod.GET)
 	public List<EducationDetails> getEducationDetails(@RequestParam(value="username") String username){
@@ -66,7 +66,7 @@ public class RestEducationController {
 		logger.debug("inside remove edu: {}");
 		String result=null;
 		if(eduservice.findbyEduIDandUsername(educationId, userservice.getCurrentUser().getUserName())==null) {
-			return new ResponseEntity<>(new CustomErrorType(unauthorizedDeleteCode, unauthorizedDeleteMessage),HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>(new CustomErrorType(unauthorizedDeleteErrorCode, unauthorizedDeleteErrorMessage),HttpStatus.UNAUTHORIZED);
 		}
 		try{
 			eduservice.removeEducationDetails(educationId);

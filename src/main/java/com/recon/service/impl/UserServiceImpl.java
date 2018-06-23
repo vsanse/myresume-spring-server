@@ -85,4 +85,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	public UserInfo getCurrentUser(){
 		return findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 	}
+
+	@Override
+	public List<UserInfo> getUserByName(String name) {
+		// TODO Auto-generated method stub
+		return userdao.getUserByName(name);
+	}
+
+	@Override
+	public List<String> getAllUsernames() {
+		// TODO Auto-generated method stub
+		return userdao.getAllUsernames();
+	}
 }

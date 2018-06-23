@@ -97,4 +97,19 @@ public class UserDaoImpl implements UserDao {
 		}
 		return false;
 	}
+
+	@Override
+	public List<UserInfo> getUserByName(String name) {
+		String[] names = name.split("\\s+");
+		Query query = emg.createQuery("from UserInfo where firstName in (:fname) or lastName in (:lname)");
+		return query.setParameter("fname", names)
+				.setParameter("lname", names)
+				.getResultList();
+	}
+
+	@Override
+	public List<String> getAllUsernames() {
+		Query query = emg.createQuery("SELECT username from UserInfo");
+		return query.getResultList();
+	}
 }

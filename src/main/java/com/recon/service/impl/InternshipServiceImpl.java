@@ -50,7 +50,7 @@ public class InternshipServiceImpl implements InternshipService{
 	}
 
 	@Override
-	public InternshipDetails getInternshipDetailsByUser(String username) {
+	public List<InternshipDetails> getInternshipDetailsByUser(String username) {
 		// TODO Auto-generated method stub
 		return internDao.getInternshipDetailsByUser(username);
 	}

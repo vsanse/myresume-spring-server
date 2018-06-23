@@ -15,6 +15,8 @@ public interface UserService {
 	public boolean isUsernameTaken(String username);
 	public boolean isEmailAreadyRegistered(String email);
 	public UserInfo getCurrentUser();
+	public List<UserInfo> getUserByName(String name);
+	public List<String> getAllUsernames();
 
 
 }

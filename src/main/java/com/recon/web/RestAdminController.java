@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.recon.entity.EducationDetails;
 import com.recon.entity.InternshipDetails;
 import com.recon.entity.UserInfo;
+import com.recon.model.Profile;
 import com.recon.service.EducationService;
 import com.recon.service.InternshipService;
+import com.recon.service.ProfileService;
 import com.recon.service.UserService;
 
 @RestController
@@ -26,6 +28,8 @@ public class RestAdminController {
 
 	@Autowired
 	private InternshipService internService;
+	
+	@Autowired ProfileService profileservice;
 
 	@RequestMapping(value = "/getallusers", method = RequestMethod.GET)
 	public List<UserInfo> getAllUsers() {
@@ -41,5 +45,14 @@ public class RestAdminController {
 	@RequestMapping(value = "/getallinternships", method = RequestMethod.GET)
 	public List<InternshipDetails> getAllInternshipDetails() {
 		return internService.getAllInternshipDetails();
+	}
+	@RequestMapping(value = "/getallusernames", method = RequestMethod.GET)
+	public List<String> getAllUsername() {
+		return userService.getAllUsernames();
+	}
+	
+	@RequestMapping(value = "/getallprofiles", method = RequestMethod.GET)
+	public List<Profile> getAllProfiles() {
+		return profileservice.getAllProfiles();
 	}
 }
