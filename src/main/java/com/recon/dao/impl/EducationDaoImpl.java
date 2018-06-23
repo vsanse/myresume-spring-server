@@ -21,7 +21,7 @@ public class EducationDaoImpl implements EducationDao {
 	@Autowired
 	private EntityManager emg;
 	
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	private Logger logger = LoggerFactory.getLogger("myresume");
 	
 	@Override
 	public String addEducationDetails(EducationDetails edu) {
@@ -71,9 +71,25 @@ public class EducationDaoImpl implements EducationDao {
 	}
 
 	@Override
-	public EducationDetails getEducationDetailsByUser(String username) {
+	public List<EducationDetails> getEducationDetailsByUser(String username) {
+		logger.info("USERNAME: "+username);
 		Query query  = emg.createQuery("from EducationDetails where userinfo.username like :username");
-		return (EducationDetails) query.setParameter("username", username).getSingleResult();
+		return  query.setParameter("username", username).getResultList();
+
+	}
+
+	@Override
+	public EducationDetails findbyEduIDandUsername(Long eduId, String username) {
+		Query query  = emg.createQuery("from EducationDetails where userinfo.username like :username and educationId=:eduID");
+		try {
+			return  (EducationDetails) query.setParameter("username", username)
+					.setParameter("eduID", eduId)
+					.getSingleResult();
+		}
+		catch(RuntimeException e) {
+			logger.error("ERROR NO RESULT FOUND");
+			return null;
+		}
 
 	}
 

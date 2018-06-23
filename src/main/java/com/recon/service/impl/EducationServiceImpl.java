@@ -39,9 +39,9 @@ public class EducationServiceImpl implements EducationService {
 	}
 
 	@Override
-	public List<EducationDetails> getAllEducationDetails(String username) {
+	public List<EducationDetails> getEducationDetailsByUser(String username) {
 
-		return edudao.getAllEducationDetails();
+		return edudao.getEducationDetailsByUser(username);
 	}
 
 	@Override
@@ -52,6 +52,11 @@ public class EducationServiceImpl implements EducationService {
 	@Override
 	public List<EducationDetails> getAllEducationDetials() {
 		return edudao.getAllEducationDetails();
+	}
+
+	@Override
+	public EducationDetails findbyEduIDandUsername(Long eduId, String username) {
+		return edudao.findbyEduIDandUsername(eduId, username);
 	}
 	
 	

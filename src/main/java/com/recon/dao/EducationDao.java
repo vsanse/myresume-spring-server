@@ -10,5 +10,6 @@ public interface EducationDao {
 	public int removeEducationDetails(Long eduId);
 	public List<EducationDetails> getAllEducationDetails();
 	public EducationDetails findByEducationId(Long eduId);
-	public EducationDetails getEducationDetailsByUser(String username);
+	public List<EducationDetails> getEducationDetailsByUser(String username);
+	public EducationDetails findbyEduIDandUsername(Long eduId, String username);
 }

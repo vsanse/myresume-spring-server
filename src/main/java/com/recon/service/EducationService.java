@@ -8,8 +8,8 @@ public interface EducationService {
 	public String addEducationDetails(EducationDetails edu);
 	public EducationDetails updateEducationDetails(EducationDetails edu);
 	public int removeEducationDetails(Long eduId);
-	public List<EducationDetails> getAllEducationDetails(String username);
+	public List<EducationDetails> getEducationDetailsByUser(String username);
 	public EducationDetails findByEducationId(Long eduId);
 	public List<EducationDetails> getAllEducationDetials();
-
+	public EducationDetails findbyEduIDandUsername(Long eduId, String username);
 }

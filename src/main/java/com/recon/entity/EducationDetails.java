@@ -8,6 +8,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @SequenceGenerator(name="eduSeq", initialValue=1002, allocationSize=123)
 public class EducationDetails {
@@ -44,6 +47,8 @@ public class EducationDetails {
 		this.educationType = educationType;
 	}
 
+	@JsonIgnore
+	@JsonProperty(value = "userinfo")
 	public UserInfo getUserinfo() {
 		return userinfo;
 	}

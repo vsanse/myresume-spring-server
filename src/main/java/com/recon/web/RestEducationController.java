@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.recon.entity.EducationDetails;
 import com.recon.service.EducationService;
+import com.recon.service.UserService;
+import com.recon.util.CustomErrorType;
 
 @RestController
 @RequestMapping("/education")
+@PropertySource("classpath:errorcodes.properties")
 public class RestEducationController {
 
 	private Logger logger = LoggerFactory.getLogger("myresume");
@@ -28,9 +33,18 @@ public class RestEducationController {
 	@Autowired
 	private EducationService eduservice;
 	
+	@Autowired
+	private UserService userservice;
+	
+	@Value("${unauthorizedDeleteCode}")
+	private String unauthorizedDeleteCode;
+	
+	@Value("${unauthorizedDeleteMessage}")
+	private String unauthorizedDeleteMessage;
+	
 	@RequestMapping(value="/getdetails",method = RequestMethod.GET)
 	public List<EducationDetails> getEducationDetails(@RequestParam(value="username") String username){
-		return eduservice.getAllEducationDetails(username);
+		return eduservice.getEducationDetailsByUser(username);
 		
 	}
 	
@@ -51,6 +65,9 @@ public class RestEducationController {
 	public ResponseEntity<?> removeEducationdetails(@PathVariable("educationId") Long educationId,HttpServletResponse response){
 		logger.debug("inside remove edu: {}");
 		String result=null;
+		if(eduservice.findbyEduIDandUsername(educationId, userservice.getCurrentUser().getUserName())==null) {
+			return new ResponseEntity<>(new CustomErrorType(unauthorizedDeleteCode, unauthorizedDeleteMessage),HttpStatus.UNAUTHORIZED);
+		}
 		try{
 			eduservice.removeEducationDetails(educationId);
 			result="{\"deleted\":true}";
