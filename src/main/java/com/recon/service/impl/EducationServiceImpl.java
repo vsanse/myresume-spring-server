@@ -3,13 +3,10 @@ package com.recon.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.recon.dao.EducationDao;
 import com.recon.entity.EducationDetails;
-import com.recon.entity.UserInfo;
 import com.recon.service.EducationService;
 import com.recon.service.UserService;
 

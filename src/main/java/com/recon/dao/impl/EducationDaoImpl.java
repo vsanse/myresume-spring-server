@@ -77,10 +77,4 @@ public class EducationDaoImpl implements EducationDao {
 
 	}
 
-	@Override
-	public List<EducationDetails> getAllEducationDetials() {
-		Query query  = emg.createQuery("from EducationDetails");
-		return query.getResultList();
-	}
-
 }

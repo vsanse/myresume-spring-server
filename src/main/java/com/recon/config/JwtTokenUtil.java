@@ -19,7 +19,12 @@ import static com.recon.model.Constants.SIGNING_KEY;
 @Component
 public class JwtTokenUtil implements Serializable {
 
-    public String getUsernameFromToken(String token) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
