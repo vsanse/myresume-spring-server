@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.recon.dao.InternshipDao;
+import com.recon.entity.EducationDetails;
 import com.recon.entity.InternshipDetails;
 
 @Repository
@@ -59,5 +60,20 @@ public class InternshipDaoImpl implements InternshipDao{
 						  .setParameter("username", username);
 		return query.getResultList();
 	}
+
+	@Override
+	public InternshipDetails findbyInternshipIDandUsername(Long internId, String username) {
+		Query query  = emg.createQuery("from InternshipDetails where userinfo.username like :username and internId=:internID");
+		try {
+			return  (InternshipDetails) query.setParameter("username", username)
+					.setParameter("internId", internId)
+					.getSingleResult();
+		}
+		catch(RuntimeException e) {
+			logger.error("ERROR NO RESULT FOUND");
+			return null;
+		}
+	}
+	
 
 }

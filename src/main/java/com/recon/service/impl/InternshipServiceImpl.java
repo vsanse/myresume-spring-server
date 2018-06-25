@@ -55,4 +55,10 @@ public class InternshipServiceImpl implements InternshipService{
 		return internDao.getInternshipDetailsByUser(username);
 	}
 
+	@Override
+	public InternshipDetails findbyInternshipIDandUsername(Long internshipId, String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

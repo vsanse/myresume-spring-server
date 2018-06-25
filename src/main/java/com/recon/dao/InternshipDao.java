@@ -11,5 +11,6 @@ public interface InternshipDao {
 	public List<InternshipDetails> getAllInternshipDetails();
 	public InternshipDetails findByInternshipId(Long internId);
 	public List<InternshipDetails> getInternshipDetailsByUser(String username);
+	public InternshipDetails findbyInternshipIDandUsername(Long eduId, String username);
 
 }
