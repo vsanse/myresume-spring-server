@@ -25,26 +25,15 @@ public class EducationDaoImpl implements EducationDao {
 	
 	@Override
 	public String addEducationDetails(EducationDetails edu) {
-		try{
 			emg.persist(edu);
 			return "Success";
-		}
-		catch(Exception e){
-			logger.error(e.getMessage());
-			return "Invalid Details Given!";
-		}
 
 	}
 
 	@Override
 	public EducationDetails updateEducationDetails(EducationDetails edu) {
-		try{
 			return emg.merge(edu);
-		}
-		catch(Exception e ){
-			logger.debug(e.getMessage());
-			return null;
-		}
+
 	}
 
 	@Override
@@ -52,7 +41,7 @@ public class EducationDaoImpl implements EducationDao {
 		logger.info("inside delete user");
 			EducationDetails edu = findByEducationId(eduId);
 			emg.remove(edu);
-			return 0;
+			return 1;
 
 	}
 

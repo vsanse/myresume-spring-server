@@ -46,14 +46,8 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public String insertUser(UserInfo user) {
 		logger.info("inside insert User:{}", user.toString());
-
-		try {
-			emg.persist(user);
-			return "Success";
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			return "Invalid Data Recieved";
-		}
+		emg.persist(user);
+		return "Success";
 	}
 
 	@Override
@@ -65,14 +59,10 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public int deleteUser(String userName) {
 		logger.info("inside delete user");
-		try {
-			UserInfo user = findByUserName(userName);
-			emg.remove(user);
-			return 1;
-		} catch (Exception e) {
-			logger.error("[ERROR] {}", e.getMessage());
-			return 0;
-		}
+		UserInfo user = findByUserName(userName);
+		emg.remove(user);
+		return 1;
+		
 	}
 
 	@Override
@@ -84,6 +74,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public boolean isUsernameTaken(String username) {
+		logger.info("Checking User Name");
 		if (findByUserName(username) != null) {
 			return true;
 		}

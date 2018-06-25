@@ -42,6 +42,12 @@ public class RestEducationController {
 	@Value("${unauthorizedDeleteErrorMessage}")
 	private String unauthorizedDeleteErrorMessage;
 	
+	@Value("${invalidDataErrorCode}")
+	private String invalidDataErrorCode;
+	
+	@Value("${invalidDataErrorMessage}")
+	private String invalidDataErrorMessage;
+	
 	@RequestMapping(value="/getdetails",method = RequestMethod.GET)
 	public List<EducationDetails> getEducationDetails(@RequestParam(value="username") String username){
 		return eduservice.getEducationDetailsByUser(username);
@@ -50,15 +56,27 @@ public class RestEducationController {
 	
 	@RequestMapping(value="/add", method=RequestMethod.POST)
 	public ResponseEntity<?> addEducationDetails(@RequestBody EducationDetails edu){
+		try{
 		logger.info("Inside addEducationDetails");
 		eduservice.addEducationDetails(edu);
 		return new ResponseEntity<>(edu, HttpStatus.CREATED);
+		}
+		catch(RuntimeException e){
+			logger.debug(e.getMessage());
+			return new ResponseEntity< >(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage),HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@RequestMapping(value="/update",method=RequestMethod.POST)
 	public ResponseEntity<?> updateEducationDetails(@RequestBody EducationDetails edu){
 		logger.info("inside update education details");
+		try{
 		return new ResponseEntity<>(eduservice.updateEducationDetails(edu),HttpStatus.CREATED);
+		}
+		catch(RuntimeException e){
+			logger.debug(e.getMessage());
+			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage), HttpStatus.BAD_REQUEST);
+			}
 	}
 	
 	@RequestMapping(value="delete/{educationId}",method=RequestMethod.GET)

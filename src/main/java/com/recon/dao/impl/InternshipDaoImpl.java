@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,22 +20,26 @@ public class InternshipDaoImpl implements InternshipDao{
 
 	@Autowired
 	private EntityManager emg;
+	
+	private Logger logger = LoggerFactory.getLogger("myresume");
+	
 	@Override
 	public String addInternshipDetails(InternshipDetails interndetails) {
-		// TODO Auto-generated method stub
-		return null;
+		emg.persist(interndetails);
+		return "Success";
 	}
 
 	@Override
 	public InternshipDetails updateInternshipDetails(InternshipDetails interndetails) {
-		// TODO Auto-generated method stub
-		return null;
+		return emg.merge(interndetails);
 	}
 
 	@Override
 	public int removeInternshipDetails(Long internId) {
-		// TODO Auto-generated method stub
-		return 0;
+		logger.info("inside delete user");
+		InternshipDetails internship = findByInternshipId(internId);
+		emg.remove(internship);
+		return 1;
 	}
 
 	@Override
@@ -44,14 +50,14 @@ public class InternshipDaoImpl implements InternshipDao{
 
 	@Override
 	public InternshipDetails findByInternshipId(Long internId) {
-		// TODO Auto-generated method stub
-		return null;
+		return emg.find(InternshipDetails.class, internId);
 	}
 
 	@Override
 	public List<InternshipDetails> getInternshipDetailsByUser(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		Query query  = emg.createQuery("from InternshipDetails where userinfo.username like :username")
+						  .setParameter("username", username);
+		return query.getResultList();
 	}
 
 }

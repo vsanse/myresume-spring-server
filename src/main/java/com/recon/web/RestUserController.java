@@ -50,6 +50,12 @@ public class RestUserController {
 	@Value("${emailExistsErrorMessage}")
 	private String emailExistsErrorMessage;
 	
+	@Value("${invalidDataErrorCode}")
+	private String invalidDataErrorCode;
+	
+	@Value("${invalidDataErrorMessage}")
+	private String invalidDataErrorMessage;
+	
 	@Autowired
     private AuthenticationManager authenticationManager;
 
@@ -70,10 +76,16 @@ public class RestUserController {
 			logger.info("ERROR ! Email Already Registered");
 			return new ResponseEntity <CustomErrorType> (new CustomErrorType(emailExistsErrorCode, emailExistsErrorMessage),HttpStatus.CONFLICT);
 		}
-		userservice.insertUser(user);
-		HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/login").buildAndExpand(user.getUserName()).toUri());
-        return new ResponseEntity<String>("{}", HttpStatus.CREATED);
+		try{
+			userservice.insertUser(user);
+//			HttpHeaders headers = new HttpHeaders();
+//	        headers.setLocation(ucBuilder.path("/login").buildAndExpand(user.getUserName()).toUri());
+	        return new ResponseEntity<>(user, HttpStatus.CREATED);
+		}
+		catch(RuntimeException e){
+			logger.error(e.getMessage());
+			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage),HttpStatus.BAD_GATEWAY);
+		}
 	}
 	
 	 @RequestMapping(value = "/login", method = RequestMethod.POST)
