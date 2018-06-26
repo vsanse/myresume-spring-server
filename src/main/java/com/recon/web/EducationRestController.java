@@ -23,6 +23,8 @@ import com.recon.service.EducationService;
 import com.recon.service.UserService;
 import com.recon.util.CustomErrorType;
 
+import javassist.NotFoundException;
+
 @RestController
 @RequestMapping("/education")
 @PropertySource("classpath:errorcodes.properties")
@@ -73,7 +75,7 @@ public class EducationRestController {
 		try{
 		return new ResponseEntity<>(eduservice.updateEducationDetails(edu),HttpStatus.CREATED);
 		}
-		catch(RuntimeException e){
+		catch(RuntimeException | NotFoundException e){
 			logger.debug(e.getMessage());
 			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage), HttpStatus.BAD_REQUEST);
 			}

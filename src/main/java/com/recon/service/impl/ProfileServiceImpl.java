@@ -6,38 +6,44 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.recon.dao.EducationDao;
-import com.recon.dao.InternshipDao;
-import com.recon.dao.UserDao;
+
 import com.recon.model.Profile;
+import com.recon.service.EducationService;
+import com.recon.service.InternshipService;
 import com.recon.service.ProfileService;
+import com.recon.service.TrainingService;
+import com.recon.service.UserService;
 
 @Service
 public class ProfileServiceImpl implements ProfileService {
 	
 	@Autowired
-	private UserDao userdao;
+	private UserService userService;
 	
 	@Autowired
-	private EducationDao edudao;
+	private EducationService eduService;
 	
 	@Autowired
-	private InternshipDao interndao;
+	private InternshipService internService;
+	
+	@Autowired
+	private TrainingService trainingService;
 	
 	@Override
 	public Profile getProfileByUsername(String username) {
 		Profile profile = new Profile();
-		if(!userdao.isUsernameTaken(username))
+		if(!userService.isUsernameTaken(username))
 			return null;
-		profile.setUserinfo(userdao.findByUserName(username));
-		profile.setEducationDetails(edudao.getEducationDetailsByUser(username));
-		profile.setInternshipDetails(interndao.getInternshipDetailsByUser(username));
+		profile.setUserinfo(userService.findByUserName(username));
+		profile.setEducationDetails(eduService.getEducationDetailsByUser(username));
+		profile.setInternshipDetails(internService.getInternshipDetailsByUser(username));
+		profile.setTrainingDetails(trainingService.getTrainingDetailsByUser(username));
 		return profile;
 	}
 
 	@Override
 	public List<Profile> getAllProfiles() {
-		List<String> usernames = userdao.getAllUsernames();
+		List<String> usernames = userService.getAllUsernames();
 		List<Profile> profiles = new ArrayList<>();
 		for(String username : usernames) {
 			profiles.add(getProfileByUsername(username));

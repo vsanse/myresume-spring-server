@@ -29,6 +29,7 @@ public class ProfileRestController {
 	@Value("${noSuchUserExistsErrorMessage}")
 	private String noSuchUserExistsErrorMessage;
 	
+	
 	@RequestMapping(value="/get/{username}", method=RequestMethod.GET)
 	public ResponseEntity<?> getProfileByUsername(@PathVariable(value="username") String username) {
 		Profile profile = profileservice.getProfileByUsername(username);

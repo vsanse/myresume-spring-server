@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
 import com.recon.dao.EducationDao;
 import com.recon.entity.EducationDetails;
 
+import javassist.NotFoundException;
+
 @Repository
 @Transactional
 public class EducationDaoImpl implements EducationDao {
@@ -31,7 +33,10 @@ public class EducationDaoImpl implements EducationDao {
 	}
 
 	@Override
-	public EducationDetails updateEducationDetails(EducationDetails edu) {
+	public EducationDetails updateEducationDetails(EducationDetails edu) throws NotFoundException {
+		if(findByEducationId(edu.getId())==null){
+			throw new NotFoundException("item doesn't exists");
+		}
 			return emg.merge(edu);
 
 	}

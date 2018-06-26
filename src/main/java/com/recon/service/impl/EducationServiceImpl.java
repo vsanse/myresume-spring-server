@@ -10,6 +10,8 @@ import com.recon.entity.EducationDetails;
 import com.recon.service.EducationService;
 import com.recon.service.UserService;
 
+import javassist.NotFoundException;
+
 @Service
 public class EducationServiceImpl implements EducationService {
 
@@ -26,7 +28,7 @@ public class EducationServiceImpl implements EducationService {
 	}
 
 	@Override
-	public EducationDetails updateEducationDetails(EducationDetails edu) {
+	public EducationDetails updateEducationDetails(EducationDetails edu) throws NotFoundException {
 
 		edu.setUserinfo(userservice.getCurrentUser());
 		return edudao.updateEducationDetails(edu);

@@ -24,6 +24,8 @@ import com.recon.service.InternshipService;
 import com.recon.service.UserService;
 import com.recon.util.CustomErrorType;
 
+import javassist.NotFoundException;
+
 @RestController
 @RequestMapping("/internship")
 @PropertySource("classpath:errorcodes.properties")
@@ -32,7 +34,6 @@ public class InternshipRestController {
 	private Logger logger = LoggerFactory.getLogger("myresume");
 	
 	@Autowired
-	private EducationService eduservice;
 	private InternshipService internshipservice;
 	
 	@Autowired
@@ -52,6 +53,7 @@ public class InternshipRestController {
 	
 	@RequestMapping(value="/getdetails",method = RequestMethod.GET)
 	public List<InternshipDetails> getInternshipDetails(@RequestParam(value="username") String username){
+		logger.debug("inside get internship details for {}",username);
 		return internshipservice.getInternshipDetailsByUser(username);
 		
 	}
@@ -75,7 +77,7 @@ public class InternshipRestController {
 		try{
 		return new ResponseEntity<>(internshipservice.updateInternshipDetails(internship),HttpStatus.CREATED);
 		}
-		catch(RuntimeException e){
+		catch(RuntimeException | NotFoundException e){
 			logger.debug(e.getMessage());
 			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage), HttpStatus.BAD_REQUEST);
 			}

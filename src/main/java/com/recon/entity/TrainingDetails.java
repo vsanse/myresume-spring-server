@@ -17,14 +17,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@SequenceGenerator(name = "internSeq", initialValue = 1002, allocationSize = 123)
-public class InternshipDetails {
+@SequenceGenerator(name = "trainingSeq", initialValue = 1002, allocationSize = 123)
+public class TrainingDetails {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "internSeq")
-	private Long internId;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trainingSeq")
+	private Long trainingId;
 
-	private String profile;
+	private String program;
 
 	private String organization;
 
@@ -59,20 +59,20 @@ public class InternshipDetails {
 		this.userinfo = userinfo;
 	}
 
-	public Long getInternId() {
-		return internId;
+	public Long getTrainingId() {
+		return trainingId;
 	}
 
-	public void setInternId(Long internId) {
-		this.internId = internId;
+	public void setTrainingId(Long internId) {
+		this.trainingId = internId;
 	}
 
-	public String getProfile() {
-		return profile;
+	public String getProgram() {
+		return program;
 	}
 
-	public void setProfile(String profile) {
-		this.profile = profile;
+	public void setProgram(String profile) {
+		this.program = profile;
 	}
 
 	public String getOrganization() {
@@ -117,7 +117,7 @@ public class InternshipDetails {
 
 	@Override
 	public String toString() {
-		return "InternshipDetails [internId=" + internId + ", profile=" + profile + ", organization=" + organization
+		return "TainingDetails [tainingId=" + trainingId + ", program=" + program + ", organization=" + organization
 				+ ", location=" + location + ", dateStarted=" + dateStarted + ", dateEnd=" + dateEnd + ", description="
 				+ description + "]";
 	}

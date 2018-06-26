@@ -12,8 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.recon.dao.InternshipDao;
-import com.recon.entity.EducationDetails;
 import com.recon.entity.InternshipDetails;
+
+import javassist.NotFoundException;
 
 @Repository
 @Transactional
@@ -31,7 +32,10 @@ public class InternshipDaoImpl implements InternshipDao{
 	}
 
 	@Override
-	public InternshipDetails updateInternshipDetails(InternshipDetails interndetails) {
+	public InternshipDetails updateInternshipDetails(InternshipDetails interndetails) throws NotFoundException {
+		if(findByInternshipId(interndetails.getInternId())== null){
+			throw new NotFoundException("item doesn't exists");
+		}
 		return emg.merge(interndetails);
 	}
 
@@ -66,7 +70,7 @@ public class InternshipDaoImpl implements InternshipDao{
 		Query query  = emg.createQuery("from InternshipDetails where userinfo.username like :username and internId=:internID");
 		try {
 			return  (InternshipDetails) query.setParameter("username", username)
-					.setParameter("internId", internId)
+					.setParameter("internID", internId)
 					.getSingleResult();
 		}
 		catch(RuntimeException e) {

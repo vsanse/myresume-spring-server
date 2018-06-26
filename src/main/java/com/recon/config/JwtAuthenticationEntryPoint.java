@@ -12,16 +12,14 @@ import java.io.Serializable;
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
 
-    /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	@Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+		System.out.println("HERE WE ARE");
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid/Expired Token Given! Please Login with right credentials.");
     }
 }
