@@ -28,8 +28,9 @@ public class AdminRestController {
 
 	@Autowired
 	private InternshipService internService;
-	
-	@Autowired ProfileService profileservice;
+
+	@Autowired
+	ProfileService profileservice;
 
 	@RequestMapping(value = "/getallusers", method = RequestMethod.GET)
 	public List<UserInfo> getAllUsers() {
@@ -46,11 +47,12 @@ public class AdminRestController {
 	public List<InternshipDetails> getAllInternshipDetails() {
 		return internService.getAllInternshipDetails();
 	}
+
 	@RequestMapping(value = "/getallusernames", method = RequestMethod.GET)
 	public List<String> getAllUsername() {
 		return userService.getAllUsernames();
 	}
-	
+
 	@RequestMapping(value = "/getallprofiles", method = RequestMethod.GET)
 	public List<Profile> getAllProfiles() {
 		return profileservice.getAllProfiles();

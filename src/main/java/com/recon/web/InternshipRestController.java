@@ -32,72 +32,75 @@ import javassist.NotFoundException;
 public class InternshipRestController {
 
 	private Logger logger = LoggerFactory.getLogger("myresume");
-	
+
 	@Autowired
 	private InternshipService internshipservice;
-	
+
 	@Autowired
 	private UserService userservice;
-	
+
 	@Value("${unauthorizedDeleteErrorCode}")
 	private String unauthorizedDeleteErrorCode;
-	
+
 	@Value("${unauthorizedDeleteErrorMessage}")
 	private String unauthorizedDeleteErrorMessage;
-	
+
 	@Value("${invalidDataErrorCode}")
 	private String invalidDataErrorCode;
-	
+
 	@Value("${invalidDataErrorMessage}")
 	private String invalidDataErrorMessage;
-	
-	@RequestMapping(value="/getdetails",method = RequestMethod.GET)
-	public List<InternshipDetails> getInternshipDetails(@RequestParam(value="username") String username){
-		logger.debug("inside get internship details for {}",username);
+
+	@RequestMapping(value = "/getdetails", method = RequestMethod.GET)
+	public List<InternshipDetails> getInternshipDetails(@RequestParam(value = "username") String username) {
+		logger.debug("inside get internship details for {}", username);
 		return internshipservice.getInternshipDetailsByUser(username);
-		
+
 	}
-	
-	@RequestMapping(value="/add", method=RequestMethod.POST)
-	public ResponseEntity<?> addInternshipDetails(@RequestBody InternshipDetails interndetails){
-		try{
-		logger.info("Inside addInternshipDetails");
-		internshipservice.addInternshipDetails(interndetails);
-		return new ResponseEntity<>(interndetails, HttpStatus.CREATED);
-		}
-		catch(RuntimeException e){
+
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public ResponseEntity<?> addInternshipDetails(@RequestBody InternshipDetails interndetails) {
+		try {
+			logger.info("Inside addInternshipDetails");
+			internshipservice.addInternshipDetails(interndetails);
+			return new ResponseEntity<>(interndetails, HttpStatus.CREATED);
+		} catch (RuntimeException e) {
 			logger.debug(e.getMessage());
-			return new ResponseEntity< >(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage),
+					HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	@RequestMapping(value="/update",method=RequestMethod.POST)
-	public ResponseEntity<?> updateInternshipDetails(@RequestBody InternshipDetails internship){
+
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public ResponseEntity<?> updateInternshipDetails(@RequestBody InternshipDetails internship) {
 		logger.info("inside update internship details");
-		try{
-		return new ResponseEntity<>(internshipservice.updateInternshipDetails(internship),HttpStatus.CREATED);
-		}
-		catch(RuntimeException | NotFoundException e){
+		try {
+			return new ResponseEntity<>(internshipservice.updateInternshipDetails(internship), HttpStatus.CREATED);
+		} catch (RuntimeException | NotFoundException e) {
 			logger.debug(e.getMessage());
-			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage), HttpStatus.BAD_REQUEST);
-			}
+			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage),
+					HttpStatus.BAD_REQUEST);
+		}
 	}
-	
-	@RequestMapping(value="delete/{internshipId}",method=RequestMethod.GET)
-	public ResponseEntity<?> removeEducationdetails(@PathVariable("internshipId") Long internshipId,HttpServletResponse response){
-		logger.debug("inside remove internship: {}",internshipId);
-		String result=null;
-		if(internshipservice.findbyInternshipIDandUsername(internshipId, userservice.getCurrentUser().getUserName())==null) {
-			return new ResponseEntity<>(new CustomErrorType(unauthorizedDeleteErrorCode, unauthorizedDeleteErrorMessage),HttpStatus.UNAUTHORIZED);
+
+	@RequestMapping(value = "delete/{internshipId}", method = RequestMethod.GET)
+	public ResponseEntity<?> removeEducationdetails(@PathVariable("internshipId") Long internshipId,
+			HttpServletResponse response) {
+		logger.debug("inside remove internship: {}", internshipId);
+		String result = null;
+		if (internshipservice.findbyInternshipIDandUsername(internshipId,
+				userservice.getCurrentUser().getUserName()) == null) {
+			return new ResponseEntity<>(
+					new CustomErrorType(unauthorizedDeleteErrorCode, unauthorizedDeleteErrorMessage),
+					HttpStatus.UNAUTHORIZED);
 		}
-		try{
+		try {
 			internshipservice.removeInternshipDetails(internshipId);
-			result="{\"deleted\":true}";
+			result = "{\"deleted\":true}";
 			return ResponseEntity.status(HttpStatus.OK).body(result);
-		}
-		catch(RuntimeException e){
-			logger.debug("EXCEPTION: {}",e.getMessage());
-			result="{\"deleted\":false}";
+		} catch (RuntimeException e) {
+			logger.debug("EXCEPTION: {}", e.getMessage());
+			result = "{\"deleted\":false}";
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
 		}
 

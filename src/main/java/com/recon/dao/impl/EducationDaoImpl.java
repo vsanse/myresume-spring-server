@@ -3,6 +3,7 @@ package com.recon.dao.impl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
@@ -20,45 +21,45 @@ import javassist.NotFoundException;
 @Transactional
 public class EducationDaoImpl implements EducationDao {
 
-	@Autowired
+	@PersistenceContext
 	private EntityManager emg;
-	
+
 	private Logger logger = LoggerFactory.getLogger("myresume");
-	
+
 	@Override
 	public String addEducationDetails(EducationDetails edu) {
-			emg.persist(edu);
-			return "Success";
+		emg.persist(edu);
+		return "Success";
 
 	}
 
 	@Override
 	public EducationDetails updateEducationDetails(EducationDetails edu) throws NotFoundException {
-		if(findByEducationId(edu.getId())==null){
+		if (findByEducationId(edu.getId()) == null) {
 			throw new NotFoundException("item doesn't exists");
 		}
-			return emg.merge(edu);
+		return emg.merge(edu);
 
 	}
 
 	@Override
 	public int removeEducationDetails(Long eduId) {
 		logger.info("inside delete user");
-			EducationDetails edu = findByEducationId(eduId);
-			emg.remove(edu);
-			return 1;
+		EducationDetails edu = findByEducationId(eduId);
+		emg.remove(edu);
+		return 1;
 
 	}
 
 	@Override
 	public List<EducationDetails> getAllEducationDetails() {
-		Query query  = emg.createQuery("from EducationDetails");
+		Query query = emg.createQuery("from EducationDetails");
 		return query.getResultList();
 	}
 
 	@Override
 	public EducationDetails findByEducationId(Long eduId) {
-		if(eduId !=null){
+		if (eduId != null) {
 			return emg.find(EducationDetails.class, eduId);
 		}
 		return null;
@@ -66,21 +67,20 @@ public class EducationDaoImpl implements EducationDao {
 
 	@Override
 	public List<EducationDetails> getEducationDetailsByUser(String username) {
-		logger.info("USERNAME: "+username);
-		Query query  = emg.createQuery("from EducationDetails where userinfo.username like :username");
-		return  query.setParameter("username", username).getResultList();
+		logger.info("USERNAME: " + username);
+		Query query = emg.createQuery("from EducationDetails where userinfo.username like :username");
+		return query.setParameter("username", username).getResultList();
 
 	}
 
 	@Override
 	public EducationDetails findbyEduIDandUsername(Long eduId, String username) {
-		Query query  = emg.createQuery("from EducationDetails where userinfo.username like :username and educationId=:eduID");
+		Query query = emg
+				.createQuery("from EducationDetails where userinfo.username like :username and educationId=:eduID");
 		try {
-			return  (EducationDetails) query.setParameter("username", username)
-					.setParameter("eduID", eduId)
+			return (EducationDetails) query.setParameter("username", username).setParameter("eduID", eduId)
 					.getSingleResult();
-		}
-		catch(RuntimeException e) {
+		} catch (RuntimeException e) {
 			logger.error("ERROR NO RESULT FOUND");
 			return null;
 		}

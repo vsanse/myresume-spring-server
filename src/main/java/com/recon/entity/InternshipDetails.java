@@ -33,20 +33,16 @@ public class InternshipDetails {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "UTC")
 	@NotNull
 	private LocalDate dateStarted;
-	
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "UTC")
 	@NotNull
 	private LocalDate dateEnd;
-	
+
 	@Lob
 	private String description;
-	
-	
+
 	@ManyToOne
-    @JoinColumn(
-        name = "username", 
-        referencedColumnName = "username"
-    )
+	@JoinColumn(name = "username", referencedColumnName = "username")
 	private UserInfo userinfo;
 
 	@JsonIgnore
@@ -121,7 +117,5 @@ public class InternshipDetails {
 				+ ", location=" + location + ", dateStarted=" + dateStarted + ", dateEnd=" + dateEnd + ", description="
 				+ description + "]";
 	}
-	
-	
 
 }

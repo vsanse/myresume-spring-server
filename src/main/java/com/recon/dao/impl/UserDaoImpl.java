@@ -62,7 +62,7 @@ public class UserDaoImpl implements UserDao {
 		UserInfo user = findByUserName(userName);
 		emg.remove(user);
 		return 1;
-		
+
 	}
 
 	@Override
@@ -93,9 +93,7 @@ public class UserDaoImpl implements UserDao {
 	public List<UserInfo> getUserByName(String name) {
 		String[] names = name.split("\\s+");
 		Query query = emg.createQuery("from UserInfo where firstName in (:fname) or lastName in (:lname)");
-		return query.setParameter("fname", names)
-				.setParameter("lname", names)
-				.getResultList();
+		return query.setParameter("fname", names).setParameter("lname", names).getResultList();
 	}
 
 	@Override

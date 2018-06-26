@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import com.recon.model.Profile;
 import com.recon.service.EducationService;
 import com.recon.service.InternshipService;
@@ -16,23 +15,23 @@ import com.recon.service.UserService;
 
 @Service
 public class ProfileServiceImpl implements ProfileService {
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private EducationService eduService;
-	
+
 	@Autowired
 	private InternshipService internService;
-	
+
 	@Autowired
 	private TrainingService trainingService;
-	
+
 	@Override
 	public Profile getProfileByUsername(String username) {
 		Profile profile = new Profile();
-		if(!userService.isUsernameTaken(username))
+		if (!userService.isUsernameTaken(username))
 			return null;
 		profile.setUserinfo(userService.findByUserName(username));
 		profile.setEducationDetails(eduService.getEducationDetailsByUser(username));
@@ -45,14 +44,10 @@ public class ProfileServiceImpl implements ProfileService {
 	public List<Profile> getAllProfiles() {
 		List<String> usernames = userService.getAllUsernames();
 		List<Profile> profiles = new ArrayList<>();
-		for(String username : usernames) {
+		for (String username : usernames) {
 			profiles.add(getProfileByUsername(username));
 		}
 		return profiles;
 	}
-
-
-	
-	
 
 }

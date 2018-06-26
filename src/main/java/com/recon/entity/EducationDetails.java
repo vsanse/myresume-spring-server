@@ -12,33 +12,30 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@SequenceGenerator(name="eduSeq", initialValue=1002, allocationSize=123)
+@SequenceGenerator(name = "eduSeq", initialValue = 1002, allocationSize = 123)
 public class EducationDetails {
-	
-    @Id 
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="eduSeq")
-    private Long educationId;
-	
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "eduSeq")
+	private Long educationId;
+
 	private Integer yearOfCompletion;
 	private String board;
-	
+
 	private String Stream;
 	private String institution;
-	
+
 	private String degree;
 	private String performanceScale;
-	
+
 	private Double performance;
-	
+
 	private String educationType;
-	
+
 	@ManyToOne
-    @JoinColumn(
-        name = "username", 
-        referencedColumnName = "username"
-    )
+	@JoinColumn(name = "username", referencedColumnName = "username")
 	private UserInfo userinfo;
-	
+
 	public String getEducationType() {
 		return educationType;
 	}
@@ -120,6 +117,5 @@ public class EducationDetails {
 	public void setPerformance(Double performance) {
 		this.performance = performance;
 	}
-	
-	
+
 }

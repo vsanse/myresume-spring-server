@@ -19,25 +19,24 @@ import com.recon.util.CustomErrorType;
 @RequestMapping("/profile")
 @PropertySource("classpath:errorcodes.properties")
 public class ProfileRestController {
-	
+
 	@Autowired
 	private ProfileService profileservice;
-	
+
 	@Value("${noSuchUserExistsErrorCode}")
 	private String noSuchUserExistsErrorCode;
-	
+
 	@Value("${noSuchUserExistsErrorMessage}")
 	private String noSuchUserExistsErrorMessage;
-	
-	
-	@RequestMapping(value="/get/{username}", method=RequestMethod.GET)
-	public ResponseEntity<?> getProfileByUsername(@PathVariable(value="username") String username) {
+
+	@RequestMapping(value = "/get/{username}", method = RequestMethod.GET)
+	public ResponseEntity<?> getProfileByUsername(@PathVariable(value = "username") String username) {
 		Profile profile = profileservice.getProfileByUsername(username);
-		if(profile==null)
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomErrorType(noSuchUserExistsErrorCode, noSuchUserExistsErrorMessage));
+		if (profile == null)
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new CustomErrorType(noSuchUserExistsErrorCode, noSuchUserExistsErrorMessage));
 		return new ResponseEntity<>(profile, HttpStatus.OK);
-			
+
 	}
-	
-	
+
 }

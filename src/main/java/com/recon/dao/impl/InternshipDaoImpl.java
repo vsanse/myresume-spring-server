@@ -3,6 +3,7 @@ package com.recon.dao.impl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
@@ -18,13 +19,13 @@ import javassist.NotFoundException;
 
 @Repository
 @Transactional
-public class InternshipDaoImpl implements InternshipDao{
+public class InternshipDaoImpl implements InternshipDao {
 
-	@Autowired
+	@PersistenceContext
 	private EntityManager emg;
-	
+
 	private Logger logger = LoggerFactory.getLogger("myresume");
-	
+
 	@Override
 	public String addInternshipDetails(InternshipDetails interndetails) {
 		emg.persist(interndetails);
@@ -33,7 +34,7 @@ public class InternshipDaoImpl implements InternshipDao{
 
 	@Override
 	public InternshipDetails updateInternshipDetails(InternshipDetails interndetails) throws NotFoundException {
-		if(findByInternshipId(interndetails.getInternId())== null){
+		if (findByInternshipId(interndetails.getInternId()) == null) {
 			throw new NotFoundException("item doesn't exists");
 		}
 		return emg.merge(interndetails);
@@ -49,7 +50,7 @@ public class InternshipDaoImpl implements InternshipDao{
 
 	@Override
 	public List<InternshipDetails> getAllInternshipDetails() {
-		Query query  = emg.createQuery("from InternshipDetails");
+		Query query = emg.createQuery("from InternshipDetails");
 		return query.getResultList();
 	}
 
@@ -60,24 +61,22 @@ public class InternshipDaoImpl implements InternshipDao{
 
 	@Override
 	public List<InternshipDetails> getInternshipDetailsByUser(String username) {
-		Query query  = emg.createQuery("from InternshipDetails where userinfo.username like :username")
-						  .setParameter("username", username);
+		Query query = emg.createQuery("from InternshipDetails where userinfo.username like :username")
+				.setParameter("username", username);
 		return query.getResultList();
 	}
 
 	@Override
 	public InternshipDetails findbyInternshipIDandUsername(Long internId, String username) {
-		Query query  = emg.createQuery("from InternshipDetails where userinfo.username like :username and internId=:internID");
+		Query query = emg
+				.createQuery("from InternshipDetails where userinfo.username like :username and internId=:internID");
 		try {
-			return  (InternshipDetails) query.setParameter("username", username)
-					.setParameter("internID", internId)
+			return (InternshipDetails) query.setParameter("username", username).setParameter("internID", internId)
 					.getSingleResult();
-		}
-		catch(RuntimeException e) {
+		} catch (RuntimeException e) {
 			logger.error("ERROR NO RESULT FOUND");
 			return null;
 		}
 	}
-	
 
 }

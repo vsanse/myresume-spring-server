@@ -7,16 +7,25 @@ import com.recon.util.CustomErrorType;
 
 public interface UserService {
 	public void insertUser(UserInfo user);
-	public UserInfo update(UserInfo user);
-	public List<UserInfo> getAllUsers();
-	public UserInfo findByUserName(String userName);
-	public int deleteUser(String userName);
-	public UserInfo findByUserEmail(String email);
-	public boolean isUsernameTaken(String username);
-	public boolean isEmailAreadyRegistered(String email);
-	public UserInfo getCurrentUser();
-	public List<UserInfo> getUserByName(String name);
-	public List<String> getAllUsernames();
 
+	public UserInfo update(UserInfo user);
+
+	public List<UserInfo> getAllUsers();
+
+	public UserInfo findByUserName(String userName);
+
+	public int deleteUser(String userName);
+
+	public UserInfo findByUserEmail(String email);
+
+	public boolean isUsernameTaken(String username);
+
+	public boolean isEmailAreadyRegistered(String email);
+
+	public UserInfo getCurrentUser();
+
+	public List<UserInfo> getUserByName(String name);
+
+	public List<String> getAllUsernames();
 
 }

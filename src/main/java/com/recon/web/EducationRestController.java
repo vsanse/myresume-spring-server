@@ -31,71 +31,73 @@ import javassist.NotFoundException;
 public class EducationRestController {
 
 	private Logger logger = LoggerFactory.getLogger("myresume");
-	
+
 	@Autowired
 	private EducationService eduservice;
-	
+
 	@Autowired
 	private UserService userservice;
-	
+
 	@Value("${unauthorizedDeleteErrorCode}")
 	private String unauthorizedDeleteErrorCode;
-	
+
 	@Value("${unauthorizedDeleteErrorMessage}")
 	private String unauthorizedDeleteErrorMessage;
-	
+
 	@Value("${invalidDataErrorCode}")
 	private String invalidDataErrorCode;
-	
+
 	@Value("${invalidDataErrorMessage}")
 	private String invalidDataErrorMessage;
-	
-	@RequestMapping(value="/getdetails",method = RequestMethod.GET)
-	public List<EducationDetails> getEducationDetails(@RequestParam(value="username") String username){
+
+	@RequestMapping(value = "/getdetails", method = RequestMethod.GET)
+	public List<EducationDetails> getEducationDetails(@RequestParam(value = "username") String username) {
 		return eduservice.getEducationDetailsByUser(username);
-		
+
 	}
-	
-	@RequestMapping(value="/add", method=RequestMethod.POST)
-	public ResponseEntity<?> addEducationDetails(@RequestBody EducationDetails edu){
-		try{
-		logger.info("Inside addEducationDetails");
-		eduservice.addEducationDetails(edu);
-		return new ResponseEntity<>(edu, HttpStatus.CREATED);
-		}
-		catch(RuntimeException e){
+
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public ResponseEntity<?> addEducationDetails(@RequestBody EducationDetails edu) {
+		try {
+			logger.info("Inside addEducationDetails");
+			eduservice.addEducationDetails(edu);
+			return new ResponseEntity<>(edu, HttpStatus.CREATED);
+		} catch (RuntimeException e) {
 			logger.debug(e.getMessage());
-			return new ResponseEntity< >(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage),
+					HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	@RequestMapping(value="/update",method=RequestMethod.POST)
-	public ResponseEntity<?> updateEducationDetails(@RequestBody EducationDetails edu){
+
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public ResponseEntity<?> updateEducationDetails(@RequestBody EducationDetails edu) {
 		logger.info("inside update education details");
-		try{
-		return new ResponseEntity<>(eduservice.updateEducationDetails(edu),HttpStatus.CREATED);
-		}
-		catch(RuntimeException | NotFoundException e){
+		try {
+			return new ResponseEntity<>(eduservice.updateEducationDetails(edu), HttpStatus.CREATED);
+		} catch (RuntimeException | NotFoundException e) {
 			logger.debug(e.getMessage());
-			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage), HttpStatus.BAD_REQUEST);
-			}
+			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage),
+					HttpStatus.BAD_REQUEST);
+		}
 	}
-	
-	@RequestMapping(value="delete/{educationId}",method=RequestMethod.GET)
-	public ResponseEntity<?> removeEducationdetails(@PathVariable("educationId") Long educationId,HttpServletResponse response){
+
+	@RequestMapping(value = "delete/{educationId}", method = RequestMethod.GET)
+	public ResponseEntity<?> removeEducationdetails(@PathVariable("educationId") Long educationId,
+			HttpServletResponse response) {
 		logger.debug("inside remove edu: {}");
-		String result=null;
-		if(eduservice.findbyEduIDandUsername(educationId, userservice.getCurrentUser().getUserName())==null) {
-			return new ResponseEntity<>(new CustomErrorType(unauthorizedDeleteErrorCode, unauthorizedDeleteErrorMessage),HttpStatus.UNAUTHORIZED);
+		String result = null;
+		if (eduservice.findbyEduIDandUsername(educationId, userservice.getCurrentUser().getUserName()) == null) {
+			return new ResponseEntity<>(
+					new CustomErrorType(unauthorizedDeleteErrorCode, unauthorizedDeleteErrorMessage),
+					HttpStatus.UNAUTHORIZED);
 		}
-		try{
+		try {
 			eduservice.removeEducationDetails(educationId);
-			result="{\"deleted\":true}";
+			result = "{\"deleted\":true}";
 			return ResponseEntity.status(HttpStatus.OK).body(result);
-		}
-		catch(RuntimeException e){
-			logger.debug("EXCEPTION: {}",e.getMessage());
-			result="{\"deleted\":false}";
+		} catch (RuntimeException e) {
+			logger.debug("EXCEPTION: {}", e.getMessage());
+			result = "{\"deleted\":false}";
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
 		}
 

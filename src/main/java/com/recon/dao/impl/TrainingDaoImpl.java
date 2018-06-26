@@ -3,6 +3,7 @@ package com.recon.dao.impl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
@@ -18,13 +19,13 @@ import javassist.NotFoundException;
 
 @Repository
 @Transactional
-public class TrainingDaoImpl implements TrainingDao{
+public class TrainingDaoImpl implements TrainingDao {
 
-	@Autowired
+	@PersistenceContext
 	private EntityManager emg;
-	
+
 	private Logger logger = LoggerFactory.getLogger("myresume");
-	
+
 	@Override
 	public String addTrainingDetails(TrainingDetails trainingdetails) {
 		emg.persist(trainingdetails);
@@ -33,7 +34,7 @@ public class TrainingDaoImpl implements TrainingDao{
 
 	@Override
 	public TrainingDetails updateTrainingDetails(TrainingDetails trainingdetails) throws NotFoundException {
-		if(findByTrainingId(trainingdetails.getTrainingId())== null){
+		if (findByTrainingId(trainingdetails.getTrainingId()) == null) {
 			throw new NotFoundException("item doesn't exists");
 		}
 		return emg.merge(trainingdetails);
@@ -49,7 +50,7 @@ public class TrainingDaoImpl implements TrainingDao{
 
 	@Override
 	public List<TrainingDetails> getAllTrainingDetails() {
-		Query query  = emg.createQuery("from TrainingDetails");
+		Query query = emg.createQuery("from TrainingDetails");
 		return query.getResultList();
 	}
 
@@ -60,24 +61,22 @@ public class TrainingDaoImpl implements TrainingDao{
 
 	@Override
 	public List<TrainingDetails> getTrainingDetailsByUser(String username) {
-		Query query  = emg.createQuery("from TrainingDetails where userinfo.username like :username")
-						  .setParameter("username", username);
+		Query query = emg.createQuery("from TrainingDetails where userinfo.username like :username")
+				.setParameter("username", username);
 		return query.getResultList();
 	}
 
 	@Override
 	public TrainingDetails findbyTrainingIDandUsername(Long trainingId, String username) {
-		Query query  = emg.createQuery("from TrainingDetails where userinfo.username like :username and trainingId=:trainingId");
+		Query query = emg
+				.createQuery("from TrainingDetails where userinfo.username like :username and trainingId=:trainingId");
 		try {
-			return  (TrainingDetails) query.setParameter("username", username)
-					.setParameter("trainingId", trainingId)
+			return (TrainingDetails) query.setParameter("username", username).setParameter("trainingId", trainingId)
 					.getSingleResult();
-		}
-		catch(RuntimeException e) {
+		} catch (RuntimeException e) {
 			logger.error("ERROR NO RESULT FOUND");
 			return null;
 		}
 	}
-	
 
 }

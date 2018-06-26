@@ -17,12 +17,13 @@ public class EducationServiceImpl implements EducationService {
 
 	@Autowired
 	private EducationDao edudao;
-	
-	@Autowired UserService userservice;
+
+	@Autowired
+	UserService userservice;
 
 	@Override
 	public String addEducationDetails(EducationDetails edu) {
-		
+
 		edu.setUserinfo(userservice.getCurrentUser());
 		return edudao.addEducationDetails(edu);
 	}
@@ -36,7 +37,7 @@ public class EducationServiceImpl implements EducationService {
 
 	@Override
 	public int removeEducationDetails(Long eduId) {
-		
+
 		return edudao.removeEducationDetails(eduId);
 	}
 
@@ -60,7 +61,5 @@ public class EducationServiceImpl implements EducationService {
 	public EducationDetails findbyEduIDandUsername(Long eduId, String username) {
 		return edudao.findbyEduIDandUsername(eduId, username);
 	}
-	
-	
 
 }

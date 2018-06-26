@@ -80,9 +80,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 		// TODO Auto-generated method stub
 		return userdao.isEmailAreadyRegistered(email);
 	}
-	
+
 	@Override
-	public UserInfo getCurrentUser(){
+	public UserInfo getCurrentUser() {
 		return findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 	}
 

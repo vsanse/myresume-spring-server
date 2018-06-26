@@ -24,7 +24,7 @@ public class UserInfo {
 	private String email;
 
 	private String phoneNumber;
-//	@JsonIgnore
+	// @JsonIgnore
 	private String password;
 
 	private String designation;
@@ -34,8 +34,8 @@ public class UserInfo {
 	private String githubLink;
 
 	private String linkedinLink;
-	
-	private String role="ROLE_USER";
+
+	private String role = "ROLE_USER";
 
 	public String getRole() {
 		return role;
@@ -103,7 +103,7 @@ public class UserInfo {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
+
 	@JsonIgnore
 	@JsonProperty(value = "password")
 	public String getPassword() {

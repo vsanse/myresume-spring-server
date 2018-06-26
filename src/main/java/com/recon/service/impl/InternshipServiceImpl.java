@@ -15,15 +15,16 @@ import com.recon.service.UserService;
 import javassist.NotFoundException;
 
 @Service
-public class InternshipServiceImpl implements InternshipService{
+public class InternshipServiceImpl implements InternshipService {
 
 	@Autowired
 	private InternshipDao internDao;
 
-	@Autowired UserService userservice;
-	
+	@Autowired
+	UserService userservice;
+
 	private Logger logger = LoggerFactory.getLogger("myresume");
-	
+
 	@Override
 	public String addInternshipDetails(InternshipDetails interndetails) {
 		// TODO Auto-generated method stub

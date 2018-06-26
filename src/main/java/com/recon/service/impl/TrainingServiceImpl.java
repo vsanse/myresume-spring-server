@@ -15,15 +15,16 @@ import com.recon.service.UserService;
 import javassist.NotFoundException;
 
 @Service
-public class TrainingServiceImpl implements TrainingService{
+public class TrainingServiceImpl implements TrainingService {
 
 	@Autowired
 	private TrainingDao trainingDao;
 
-	@Autowired UserService userservice;
-	
+	@Autowired
+	UserService userservice;
+
 	private Logger logger = LoggerFactory.getLogger("myresume");
-	
+
 	@Override
 	public String addTrainingDetails(TrainingDetails trainingdetails) {
 		// TODO Auto-generated method stub

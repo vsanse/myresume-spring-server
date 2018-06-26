@@ -40,89 +40,84 @@ public class UserRestController {
 
 	@Value("${userExistsErrorCode}")
 	private String userExistsErrorCode;
-	
+
 	@Value("${userExistsErrorMessage}")
 	private String userExistsErrorMessage;
-	
+
 	@Value("${emailExistsErrorCode}")
 	private String emailExistsErrorCode;
-	
+
 	@Value("${emailExistsErrorMessage}")
 	private String emailExistsErrorMessage;
-	
+
 	@Value("${invalidDataErrorCode}")
 	private String invalidDataErrorCode;
-	
+
 	@Value("${invalidDataErrorMessage}")
 	private String invalidDataErrorMessage;
-	
-	@Autowired
-    private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-	
-	
-	
-	
-	@RequestMapping(value="/register",method = RequestMethod.POST)
-	public ResponseEntity<?> createUser(@RequestBody UserInfo user,UriComponentsBuilder ucBuilder ){
-		logger.debug("USER [IN CONTROLLER]: {}",user.toString());
-		if(userservice.isUsernameTaken(user.getUserName())== true) {
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public ResponseEntity<?> createUser(@RequestBody UserInfo user, UriComponentsBuilder ucBuilder) {
+		logger.debug("USER [IN CONTROLLER]: {}", user.toString());
+		if (userservice.isUsernameTaken(user.getUserName()) == true) {
 			logger.info("ERROR ! UserName Taken");
-			return new ResponseEntity <CustomErrorType> (new CustomErrorType(userExistsErrorCode, userExistsErrorMessage),HttpStatus.CONFLICT);
+			return new ResponseEntity<CustomErrorType>(new CustomErrorType(userExistsErrorCode, userExistsErrorMessage),
+					HttpStatus.CONFLICT);
 		}
-		if(userservice.isEmailAreadyRegistered(user.getEmail())== true){
+		if (userservice.isEmailAreadyRegistered(user.getEmail()) == true) {
 			logger.info("ERROR ! Email Already Registered");
-			return new ResponseEntity <CustomErrorType> (new CustomErrorType(emailExistsErrorCode, emailExistsErrorMessage),HttpStatus.CONFLICT);
+			return new ResponseEntity<CustomErrorType>(
+					new CustomErrorType(emailExistsErrorCode, emailExistsErrorMessage), HttpStatus.CONFLICT);
 		}
-		try{
+		try {
 			userservice.insertUser(user);
-//			HttpHeaders headers = new HttpHeaders();
-//	        headers.setLocation(ucBuilder.path("/login").buildAndExpand(user.getUserName()).toUri());
-	        return new ResponseEntity<>(user, HttpStatus.CREATED);
-		}
-		catch(RuntimeException e){
+			// HttpHeaders headers = new HttpHeaders();
+			// headers.setLocation(ucBuilder.path("/login").buildAndExpand(user.getUserName()).toUri());
+			return new ResponseEntity<>(user, HttpStatus.CREATED);
+		} catch (RuntimeException e) {
 			logger.error(e.getMessage());
-			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage),HttpStatus.BAD_GATEWAY);
+			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage),
+					HttpStatus.BAD_GATEWAY);
 		}
 	}
-	
-	 @RequestMapping(value = "/login", method = RequestMethod.POST)
-	    public ResponseEntity<?> register(@RequestBody LoginUser loginUser) throws AuthenticationException {
-		    logger.info("[Login creds:] {}",loginUser.toString());
-	        final Authentication authentication = authenticationManager.authenticate(
-	                new UsernamePasswordAuthenticationToken(
-	                        loginUser.getUsername(),
-	                        loginUser.getPassword()
-	                )
-	        );
-	        SecurityContextHolder.getContext().setAuthentication(authentication);
-	        final UserInfo user = userservice.findByUserName(loginUser.getUsername());
-	        final String token = jwtTokenUtil.generateToken(user);
-	        return ResponseEntity.ok(new AuthToken(token));
-	    }
-	 
-	 @RequestMapping(value="/isUsernameAvailable",method = RequestMethod.GET)
-	 public boolean isUsernameAvailable(@RequestParam(value="username") String username){
-		 if(!userservice.isUsernameTaken(username)){
-			 return true;
-		 }
-		 return false;
-	 }
-	 @RequestMapping(value="/isEmailRegistered",method = RequestMethod.GET)
-	 public boolean isEmailRegistered(@RequestParam(value="email") String email){
-		 if(userservice.isEmailAreadyRegistered(email)){
-			 return true;
-		 }
-		 return false;
-	 }
-	
-	 @RequestMapping(value="/me", method=RequestMethod.GET)
-	 public UserInfo getCurrentUser(){	
-		String username =  SecurityContextHolder.getContext().getAuthentication().getName();
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public ResponseEntity<?> register(@RequestBody LoginUser loginUser) throws AuthenticationException {
+		logger.info("[Login creds:] {}", loginUser.toString());
+		final Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword()));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		final UserInfo user = userservice.findByUserName(loginUser.getUsername());
+		final String token = jwtTokenUtil.generateToken(user);
+		return ResponseEntity.ok(new AuthToken(token));
+	}
+
+	@RequestMapping(value = "/isUsernameAvailable", method = RequestMethod.GET)
+	public boolean isUsernameAvailable(@RequestParam(value = "username") String username) {
+		if (!userservice.isUsernameTaken(username)) {
+			return true;
+		}
+		return false;
+	}
+
+	@RequestMapping(value = "/isEmailRegistered", method = RequestMethod.GET)
+	public boolean isEmailRegistered(@RequestParam(value = "email") String email) {
+		if (userservice.isEmailAreadyRegistered(email)) {
+			return true;
+		}
+		return false;
+	}
+
+	@RequestMapping(value = "/me", method = RequestMethod.GET)
+	public UserInfo getCurrentUser() {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		return userservice.findByUserName(username);
-	 }
-	
-	
+	}
+
 }
