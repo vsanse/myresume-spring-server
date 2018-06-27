@@ -3,6 +3,7 @@ package com.recon.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.recon.dao.ProjectDao;
 import com.recon.entity.ProjectDetails;
@@ -11,6 +12,7 @@ import com.recon.service.UserService;
 
 import javassist.NotFoundException;
 
+@Service	
 public class ProjectServiceImpl implements ProjectService {
 
 	@Autowired

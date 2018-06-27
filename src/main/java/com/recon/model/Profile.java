@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.recon.entity.EducationDetails;
 import com.recon.entity.InternshipDetails;
+import com.recon.entity.ProjectDetails;
 import com.recon.entity.TrainingDetails;
 import com.recon.entity.UserInfo;
 
@@ -13,6 +14,7 @@ public class Profile {
 	private List<EducationDetails> educationDetails;
 	private List<InternshipDetails> internshipDetails;
 	private List<TrainingDetails> trainingDetails;
+	private List<ProjectDetails> projectDetails;
 
 	public UserInfo getUserinfo() {
 		return userinfo;
@@ -45,5 +47,15 @@ public class Profile {
 	public void setTrainingDetails(List<TrainingDetails> trainingDetails) {
 		this.trainingDetails = trainingDetails;
 	}
+
+	public List<ProjectDetails> getProjectDetails() {
+		return projectDetails;
+	}
+
+	public void setProjectDetails(List<ProjectDetails> projectDetails) {
+		this.projectDetails = projectDetails;
+	}
+	
+	
 
 }

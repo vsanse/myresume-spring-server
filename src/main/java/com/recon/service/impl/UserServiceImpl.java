@@ -87,9 +87,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	}
 
 	@Override
-	public List<UserInfo> getUserByName(String name) {
+	public List<String> searchUser(String searchCriteria) {
 		// TODO Auto-generated method stub
-		return userdao.getUserByName(name);
+		return userdao.searchUser(searchCriteria);
 	}
 
 	@Override

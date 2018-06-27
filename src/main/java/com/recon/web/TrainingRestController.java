@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,14 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.recon.entity.TrainingDetails;
-import com.recon.service.EducationService;
-import com.recon.service.TrainingService;
 import com.recon.service.TrainingService;
 import com.recon.service.UserService;
 import com.recon.util.CustomErrorType;
 
 import javassist.NotFoundException;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/training")
 @PropertySource("classpath:errorcodes.properties")

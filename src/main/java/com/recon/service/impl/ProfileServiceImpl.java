@@ -10,6 +10,7 @@ import com.recon.model.Profile;
 import com.recon.service.EducationService;
 import com.recon.service.InternshipService;
 import com.recon.service.ProfileService;
+import com.recon.service.ProjectService;
 import com.recon.service.TrainingService;
 import com.recon.service.UserService;
 
@@ -27,6 +28,9 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Autowired
 	private TrainingService trainingService;
+	
+	@Autowired
+	private ProjectService projectService;
 
 	@Override
 	public Profile getProfileByUsername(String username) {
@@ -37,6 +41,7 @@ public class ProfileServiceImpl implements ProfileService {
 		profile.setEducationDetails(eduService.getEducationDetailsByUser(username));
 		profile.setInternshipDetails(internService.getInternshipDetailsByUser(username));
 		profile.setTrainingDetails(trainingService.getTrainingDetailsByUser(username));
+		profile.setProjectDetails(projectService.getAllProjectsByUsername(username));
 		return profile;
 	}
 

@@ -1,10 +1,12 @@
 package com.recon.dao.impl;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +20,7 @@ import com.recon.entity.UserInfo;
 @Transactional
 
 public class UserDaoImpl implements UserDao {
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	private Logger logger = LoggerFactory.getLogger("myresume");
 
 	@PersistenceContext
 	private EntityManager emg;
@@ -90,10 +92,16 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public List<UserInfo> getUserByName(String name) {
-		String[] names = name.split("\\s+");
-		Query query = emg.createQuery("from UserInfo where firstName in (:fname) or lastName in (:lname)");
-		return query.setParameter("fname", names).setParameter("lname", names).getResultList();
+	public List<String> searchUser(String serachCriteria) {
+		logger.debug("Search Criteria Before: {}",serachCriteria);
+		String[] criteria = serachCriteria.split("\\s+");
+		logger.debug("Search Criteria: {}",criteria[0]);
+		Query query = emg.createQuery("Select username from UserInfo where firstName in :fname or lastName in :lname or email in :emails or username in :usernames");
+		query.setParameter("fname", Arrays.asList(criteria))
+			 .setParameter("lname",  Arrays.asList(criteria))
+			 .setParameter("emails",  Arrays.asList(criteria))
+			 .setParameter("usernames",  Arrays.asList(criteria));
+		return query.getResultList();
 	}
 
 	@Override

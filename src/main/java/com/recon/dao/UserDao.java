@@ -21,7 +21,7 @@ public interface UserDao {
 
 	public boolean isEmailAreadyRegistered(String email);
 
-	public List<UserInfo> getUserByName(String name);
+	public List<String> searchUser(String serachCriteria);
 
 	public List<String> getAllUsernames();
 

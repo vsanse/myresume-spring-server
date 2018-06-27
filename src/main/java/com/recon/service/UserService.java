@@ -24,7 +24,7 @@ public interface UserService {
 
 	public UserInfo getCurrentUser();
 
-	public List<UserInfo> getUserByName(String name);
+	public List<String> searchUser(String searchCriteria);
 
 	public List<String> getAllUsernames();
 
