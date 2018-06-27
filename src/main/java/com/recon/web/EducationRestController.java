@@ -52,7 +52,7 @@ public class EducationRestController {
 	@Value("${invalidDataErrorMessage}")
 	private String invalidDataErrorMessage;
 
-	@RequestMapping(value = "/getdetails", method = RequestMethod.GET)
+	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public List<EducationDetails> getEducationDetails(@RequestParam(value = "username") String username) {
 		return eduservice.getEducationDetailsByUser(username);
 

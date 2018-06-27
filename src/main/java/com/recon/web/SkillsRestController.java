@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.recon.entity.TrainingDetails;
-import com.recon.service.TrainingService;
+import com.recon.entity.SkillsDetails;
+import com.recon.service.SkillsService;
 import com.recon.service.UserService;
 import com.recon.util.CustomErrorType;
 
@@ -28,14 +28,14 @@ import javassist.NotFoundException;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/training")
+@RequestMapping("/skills")
 @PropertySource("classpath:errorcodes.properties")
-public class TrainingRestController {
+public class SkillsRestController {
 
 	private Logger logger = LoggerFactory.getLogger("myresume");
 
 	@Autowired
-	private TrainingService trainingService;
+	private SkillsService skillsService;
 
 	@Autowired
 	private UserService userservice;
@@ -53,18 +53,18 @@ public class TrainingRestController {
 	private String invalidDataErrorMessage;
 
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
-	public List<TrainingDetails> getTrainingDetails(@RequestParam(value = "username") String username) {
-		logger.debug("inside get training details for {}", username);
-		return trainingService.getTrainingDetailsByUser(username);
+	public List<SkillsDetails> getSkillsDetails(@RequestParam(value = "username") String username) {
+		logger.debug("inside get skills details for {}", username);
+		return skillsService.getSkillsByUsername(username);
 
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public ResponseEntity<?> addTrainingDetails(@RequestBody TrainingDetails trainingdetails) {
+	public ResponseEntity<?> addSkillsDetails(@RequestBody SkillsDetails skillsdetails) {
 		try {
-			logger.info("Inside addTrainingDetails");
-			trainingService.addTrainingDetails(trainingdetails);
-			return new ResponseEntity<>(trainingdetails, HttpStatus.CREATED);
+			logger.info("Inside addSkillsDetails");
+			skillsService.addSkills(skillsdetails);
+			return new ResponseEntity<>(skillsdetails, HttpStatus.CREATED);
 		} catch (RuntimeException e) {
 			logger.debug(e.getMessage());
 			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage),
@@ -73,10 +73,10 @@ public class TrainingRestController {
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public ResponseEntity<?> updateTrainingDetails(@RequestBody TrainingDetails training) {
-		logger.info("inside update training details");
+	public ResponseEntity<?> updateSkillsDetails(@RequestBody SkillsDetails skill) {
+		logger.info("inside update skills details");
 		try {
-			return new ResponseEntity<>(trainingService.updateTrainingDetails(training), HttpStatus.CREATED);
+			return new ResponseEntity<>(skillsService.updateSkill(skill), HttpStatus.CREATED);
 		} catch (RuntimeException | NotFoundException e) {
 			logger.debug(e.getMessage());
 			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage),
@@ -84,19 +84,18 @@ public class TrainingRestController {
 		}
 	}
 
-	@RequestMapping(value = "delete/{trainingId}", method = RequestMethod.GET)
-	public ResponseEntity<?> removeEducationdetails(@PathVariable("trainingId") Long trainingId,
+	@RequestMapping(value = "delete/{skillsId}", method = RequestMethod.GET)
+	public ResponseEntity<?> removeEducationdetails(@PathVariable("skillsId") Long skillsId,
 			HttpServletResponse response) {
-		logger.debug("inside remove training: {}", trainingId);
+		logger.debug("inside remove skills: {}", skillsId);
 		String result = null;
-		if (trainingService.findbyTrainingIDandUsername(trainingId,
-				userservice.getCurrentUser().getUserName()) == null) {
+		if (skillsService.getSkillByIdUsername(skillsId, userservice.getCurrentUser().getUserName()) == null) {
 			return new ResponseEntity<>(
 					new CustomErrorType(unauthorizedDeleteErrorCode, unauthorizedDeleteErrorMessage),
 					HttpStatus.UNAUTHORIZED);
 		}
 		try {
-			trainingService.removeTrainingDetails(trainingId);
+			skillsService.removeSkill(skillsId);
 			result = "{\"deleted\":true}";
 			return ResponseEntity.status(HttpStatus.OK).body(result);
 		} catch (RuntimeException e) {

@@ -18,7 +18,6 @@ import com.recon.entity.UserInfo;
 
 @Repository("userdao")
 @Transactional
-
 public class UserDaoImpl implements UserDao {
 	private Logger logger = LoggerFactory.getLogger("myresume");
 

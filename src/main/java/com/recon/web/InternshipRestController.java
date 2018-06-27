@@ -52,7 +52,7 @@ public class InternshipRestController {
 	@Value("${invalidDataErrorMessage}")
 	private String invalidDataErrorMessage;
 
-	@RequestMapping(value = "/getdetails", method = RequestMethod.GET)
+	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public List<InternshipDetails> getInternshipDetails(@RequestParam(value = "username") String username) {
 		logger.debug("inside get internship details for {}", username);
 		return internshipservice.getInternshipDetailsByUser(username);

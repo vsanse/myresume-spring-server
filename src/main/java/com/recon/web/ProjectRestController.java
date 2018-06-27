@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.recon.entity.TrainingDetails;
-import com.recon.service.TrainingService;
+import com.recon.entity.ProjectDetails;
+import com.recon.service.ProjectService;
 import com.recon.service.UserService;
 import com.recon.util.CustomErrorType;
 
@@ -28,14 +28,14 @@ import javassist.NotFoundException;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/training")
+@RequestMapping("/project")
 @PropertySource("classpath:errorcodes.properties")
-public class TrainingRestController {
+public class ProjectRestController {
 
 	private Logger logger = LoggerFactory.getLogger("myresume");
 
 	@Autowired
-	private TrainingService trainingService;
+	private ProjectService projectService;
 
 	@Autowired
 	private UserService userservice;
@@ -53,18 +53,18 @@ public class TrainingRestController {
 	private String invalidDataErrorMessage;
 
 	@RequestMapping(value = "/get", method = RequestMethod.GET)
-	public List<TrainingDetails> getTrainingDetails(@RequestParam(value = "username") String username) {
-		logger.debug("inside get training details for {}", username);
-		return trainingService.getTrainingDetailsByUser(username);
+	public List<ProjectDetails> getProjectDetails(@RequestParam(value = "username") String username) {
+		logger.debug("inside get project details for {}", username);
+		return projectService.getAllProjectsByUsername(username);
 
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public ResponseEntity<?> addTrainingDetails(@RequestBody TrainingDetails trainingdetails) {
+	public ResponseEntity<?> addProjectDetails(@RequestBody ProjectDetails projectdetails) {
 		try {
-			logger.info("Inside addTrainingDetails");
-			trainingService.addTrainingDetails(trainingdetails);
-			return new ResponseEntity<>(trainingdetails, HttpStatus.CREATED);
+			logger.info("Inside addProjectDetails");
+			projectService.addProjectDetails(projectdetails);
+			return new ResponseEntity<>(projectdetails, HttpStatus.CREATED);
 		} catch (RuntimeException e) {
 			logger.debug(e.getMessage());
 			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage),
@@ -73,10 +73,10 @@ public class TrainingRestController {
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public ResponseEntity<?> updateTrainingDetails(@RequestBody TrainingDetails training) {
-		logger.info("inside update training details");
+	public ResponseEntity<?> updateProjectDetails(@RequestBody ProjectDetails project) {
+		logger.info("inside update project details");
 		try {
-			return new ResponseEntity<>(trainingService.updateTrainingDetails(training), HttpStatus.CREATED);
+			return new ResponseEntity<>(projectService.updateProject(project), HttpStatus.CREATED);
 		} catch (RuntimeException | NotFoundException e) {
 			logger.debug(e.getMessage());
 			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage),
@@ -84,19 +84,18 @@ public class TrainingRestController {
 		}
 	}
 
-	@RequestMapping(value = "delete/{trainingId}", method = RequestMethod.GET)
-	public ResponseEntity<?> removeEducationdetails(@PathVariable("trainingId") Long trainingId,
+	@RequestMapping(value = "delete/{projectId}", method = RequestMethod.GET)
+	public ResponseEntity<?> removeEducationdetails(@PathVariable("projectId") Long projectId,
 			HttpServletResponse response) {
-		logger.debug("inside remove training: {}", trainingId);
+		logger.debug("inside remove project: {}", projectId);
 		String result = null;
-		if (trainingService.findbyTrainingIDandUsername(trainingId,
-				userservice.getCurrentUser().getUserName()) == null) {
+		if (projectService.getProjectByUsernameandPid(userservice.getCurrentUser().getUserName(), projectId) == null) {
 			return new ResponseEntity<>(
 					new CustomErrorType(unauthorizedDeleteErrorCode, unauthorizedDeleteErrorMessage),
 					HttpStatus.UNAUTHORIZED);
 		}
 		try {
-			trainingService.removeTrainingDetails(trainingId);
+			projectService.removeProjectDetails(projectId);
 			result = "{\"deleted\":true}";
 			return ResponseEntity.status(HttpStatus.OK).body(result);
 		} catch (RuntimeException e) {
