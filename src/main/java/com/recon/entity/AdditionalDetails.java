@@ -39,7 +39,9 @@ public class AdditionalDetails {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
+	@JsonIgnore
+	@JsonProperty(value = "userinfo")
 	public UserInfo getUserinfo() {
 		return userinfo;
 	}
