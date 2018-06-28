@@ -36,7 +36,9 @@ public class SkillsDetails {
 	public void setSkill(String skill) {
 		this.skill = skill;
 	}
-
+	
+	@JsonIgnore
+	@JsonProperty(value = "userinfo")
 	public UserInfo getUserinfo() {
 		return userinfo;
 	}
