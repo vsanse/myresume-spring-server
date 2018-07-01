@@ -9,6 +9,9 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @SequenceGenerator(name="additionalSeq", initialValue=1002, allocationSize=123)
 public class AdditionalDetails {
