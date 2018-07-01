@@ -6,7 +6,7 @@
 	<groupId>com.recon</groupId>
 	<artifactId>myresume</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>myresume</name>
 	<description>Project for managing resume online</description>
