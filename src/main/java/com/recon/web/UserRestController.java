@@ -129,7 +129,7 @@ public class UserRestController {
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ResponseEntity<?> updateUserInfo(@RequestBody UserInfo user){
-		if(userservice.getCurrentUser().getUserName().equals(user.getUserName())){
+		if(userservice.getCurrentUser() !=null && userservice.getCurrentUser().getUserName().equals(user.getUserName())){
 			try {
 				return new ResponseEntity<>(userservice.update(user),HttpStatus.CREATED);
 			} catch (NotFoundException | RuntimeException e) {
