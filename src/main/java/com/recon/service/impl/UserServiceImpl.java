@@ -80,6 +80,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	@Override
 	public boolean isEmailAreadyRegistered(String email) {
 		// TODO Auto-generated method stub
+		UserInfo currentUser = getCurrentUser();
+		if(currentUser!=null  && currentUser.getEmail().equals(email)){
+			return false;
+		}
 		return userdao.isEmailAreadyRegistered(email);
 	}
 

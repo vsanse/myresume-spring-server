@@ -129,7 +129,13 @@ public class UserRestController {
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ResponseEntity<?> updateUserInfo(@RequestBody UserInfo user){
+		user.setRole("ROLE_USER");
 		if(userservice.getCurrentUser() !=null && userservice.getCurrentUser().getUserName().equals(user.getUserName())){
+			if (userservice.isEmailAreadyRegistered(user.getEmail()) == true) {
+				logger.info("ERROR ! Email Already Registered");
+				return new ResponseEntity<CustomErrorType>(
+						new CustomErrorType(emailExistsErrorCode, emailExistsErrorMessage), HttpStatus.CONFLICT);
+			}
 			try {
 				return new ResponseEntity<>(userservice.update(user),HttpStatus.CREATED);
 			} catch (NotFoundException | RuntimeException e) {
