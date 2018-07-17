@@ -5,10 +5,12 @@ import java.util.List;
 import com.recon.entity.UserInfo;
 import com.recon.util.CustomErrorType;
 
+import javassist.NotFoundException;
+
 public interface UserService {
 	public void insertUser(UserInfo user);
 
-	public UserInfo update(UserInfo user);
+	public UserInfo update(UserInfo user) throws NotFoundException;
 
 	public List<UserInfo> getAllUsers();
 

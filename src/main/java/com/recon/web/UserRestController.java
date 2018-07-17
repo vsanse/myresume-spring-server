@@ -29,6 +29,8 @@ import com.recon.model.LoginUser;
 import com.recon.service.UserService;
 import com.recon.util.CustomErrorType;
 
+import javassist.NotFoundException;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/user")
@@ -123,6 +125,22 @@ public class UserRestController {
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public List<String> searchUsers(@RequestParam("search") String searchCriteria){
 		return userservice.searchUser(searchCriteria);
+	}
+	
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public ResponseEntity<?> updateUserInfo(@RequestBody UserInfo user){
+		if(userservice.getCurrentUser().getUserName().equals(user.getUserName())){
+			try {
+				return new ResponseEntity<>(userservice.update(user),HttpStatus.CREATED);
+			} catch (NotFoundException | RuntimeException e) {
+				return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage),
+						HttpStatus.BAD_REQUEST);
+			}
+		}
+		else{
+			return new ResponseEntity<>(new CustomErrorType(invalidDataErrorCode, invalidDataErrorMessage),
+					HttpStatus.BAD_REQUEST);
+		}
 	}
 
 }

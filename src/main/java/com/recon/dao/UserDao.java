@@ -4,10 +4,12 @@ import java.util.List;
 
 import com.recon.entity.UserInfo;
 
+import javassist.NotFoundException;
+
 public interface UserDao {
 	public String insertUser(UserInfo user);
 
-	public UserInfo update(UserInfo user);
+	public UserInfo update(UserInfo user) throws NotFoundException;
 
 	public List<UserInfo> getAllUsers();
 

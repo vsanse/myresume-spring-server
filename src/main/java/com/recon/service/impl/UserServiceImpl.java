@@ -16,6 +16,8 @@ import com.recon.dao.UserDao;
 import com.recon.entity.UserInfo;
 import com.recon.service.UserService;
 
+import javassist.NotFoundException;
+
 @Service(value = "userService")
 public class UserServiceImpl implements UserDetailsService, UserService {
 	@Autowired
@@ -31,7 +33,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	}
 
 	@Override
-	public UserInfo update(UserInfo user) {
+	public UserInfo update(UserInfo user) throws NotFoundException {
 		return userdao.update(user);
 	}
 

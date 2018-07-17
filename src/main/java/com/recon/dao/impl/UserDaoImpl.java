@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.recon.dao.UserDao;
 import com.recon.entity.UserInfo;
 
+import javassist.NotFoundException;
+
 @Repository("userdao")
 @Transactional
 public class UserDaoImpl implements UserDao {
@@ -52,8 +54,11 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public UserInfo update(UserInfo user) {
+	public UserInfo update(UserInfo user) throws NotFoundException {
 		logger.info("inside update user");
+		if(findByUserName(user.getUserName())== null){
+			throw new NotFoundException("item doesn't exists");
+		}
 		return emg.merge(user);
 	}
 
