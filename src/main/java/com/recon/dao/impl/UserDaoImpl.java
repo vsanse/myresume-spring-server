@@ -56,9 +56,12 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public UserInfo update(UserInfo user) throws NotFoundException {
 		logger.info("inside update user");
-		if(findByUserName(user.getUserName())== null){
+		UserInfo userExists =  findByUserName(user.getUserName());
+		if(userExists== null){
 			throw new NotFoundException("item doesn't exists");
 		}
+		logger.debug(userExists.getPassword());
+		user.setPassword(userExists.getPassword());
 		return emg.merge(user);
 	}
 

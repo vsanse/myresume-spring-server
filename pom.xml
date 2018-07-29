@@ -6,7 +6,7 @@
 	<groupId>com.recon</groupId>
 	<artifactId>myresume</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>myresume</name>
 	<description>Project for managing resume online</description>
@@ -79,6 +79,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>myresume</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
