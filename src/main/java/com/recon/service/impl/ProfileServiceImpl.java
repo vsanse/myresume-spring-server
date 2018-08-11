@@ -13,6 +13,8 @@ import com.recon.service.ProfileService;
 import com.recon.service.ProjectService;
 import com.recon.service.TrainingService;
 import com.recon.service.UserService;
+import com.recon.service.SkillsService;
+import com.recon.service.AdditionalDetailsService;
 
 @Service
 public class ProfileServiceImpl implements ProfileService {
@@ -32,6 +34,12 @@ public class ProfileServiceImpl implements ProfileService {
 	@Autowired
 	private ProjectService projectService;
 
+	@Autowired
+	private SkillsService skillsService;
+
+	@Autowired
+	private AdditionalDetailsService additionalDetailsService;
+
 	@Override
 	public Profile getProfileByUsername(String username) {
 		Profile profile = new Profile();
@@ -42,6 +50,8 @@ public class ProfileServiceImpl implements ProfileService {
 		profile.setInternshipDetails(internService.getInternshipDetailsByUser(username));
 		profile.setTrainingDetails(trainingService.getTrainingDetailsByUser(username));
 		profile.setProjectDetails(projectService.getAllProjectsByUsername(username));
+		profile.setSkillsDetails(skillsService.getSkillsByUsername(username));
+		profile.setAdditionalDetails(additionalDetailsService.getAdditionalDetailsByUsername(username));
 		return profile;
 	}
 

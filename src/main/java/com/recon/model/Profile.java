@@ -6,7 +6,9 @@ import com.recon.entity.EducationDetails;
 import com.recon.entity.InternshipDetails;
 import com.recon.entity.ProjectDetails;
 import com.recon.entity.TrainingDetails;
+import com.recon.entity.SkillsDetails;
 import com.recon.entity.UserInfo;
+import com.recon.entity.AdditionalDetails;
 
 public class Profile {
 
@@ -15,6 +17,8 @@ public class Profile {
 	private List<InternshipDetails> internshipDetails;
 	private List<TrainingDetails> trainingDetails;
 	private List<ProjectDetails> projectDetails;
+        private List<SkillsDetails> skillsDetails;
+	private List<AdditionalDetails> additionalDetails;
 
 	public UserInfo getUserinfo() {
 		return userinfo;
@@ -56,6 +60,21 @@ public class Profile {
 		this.projectDetails = projectDetails;
 	}
 	
+	public List<SkillsDetails> getSkillsDetails() {
+		return skillsDetails;
+	}
+
+	public void setSkillsDetails(List<SkillsDetails> skillsDetails) {
+		this.skillsDetails = skillsDetails;
+	}
 	
 
+	public List<AdditionalDetails> getAdditionalDetails() {
+		return additionalDetails;
+	}
+
+	public void setAdditionalDetails(List<AdditionalDetails> additionalDetails) {
+		this.additionalDetails = additionalDetails;
+	}
+	
 }
